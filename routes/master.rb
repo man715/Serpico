@@ -20,6 +20,18 @@ get '/master/findings' do
   haml :findings_list
 end
 
+# List Available Hosts
+get '/master/hosts' do
+  @hosts = Hosts.all(order: [:ip.asc])
+  haml :hosts_list
+end
+
+# List New Hosts
+get '/master/hosts/new' do
+  @master = true
+  haml :create_host
+end
+
 # Create a new templated finding
 get '/master/findings/new' do
   @master = true

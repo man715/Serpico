@@ -450,13 +450,13 @@ def nist800(data)
   # +------------+-----------+---------------+----------+----------+----------+-----------+
 
   if nist800_total >= 240
-    nist_rating = "Very High" 
+    nist_rating = "Very High"
   elsif nist800_total >= 150
-    nist_rating = "High" 
+    nist_rating = "High"
   elsif nist800_total >= 90
-    nist_rating = "Moderate" 
+    nist_rating = "Moderate"
   elsif nist800_total >= 32
-    nist_rating = "Low" 
+    nist_rating = "Low"
   elsif nist800_total < 32
     nist_rating = "Very Low"
   end
@@ -1207,6 +1207,13 @@ def get_scoring_findings(report)
 
   [findings, dread, cvss, cvss3, risk, riskmatrix, nist800]
 end
+
+# Pull all hosts
+def get_hosts(report)
+  hosts = Hosts.all(report_id: report.id, order: [:ip])
+  hosts
+end
+
 
 # Get the global configuration scoring algorithm and set at the report level
 def set_scoring(config_options)

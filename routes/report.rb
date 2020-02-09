@@ -726,6 +726,31 @@ get '/report/:id/findings' do
   haml :findings_list
 end
 
+# Hosts List Menu
+get '/report/:id/hosts' do
+  @chart = config_options['chart']
+  @report = true
+  id = params[:id]
+
+  # Query for the first report matching the report_name
+  @report = get_report(id)
+  @plugin_side_menu = get_plugin_list('user')
+
+  return 'No Such Report' if @report.nil?
+
+  @report.update(scoring: set_scoring(config_options)) unless @report.scoring
+
+  @hosts = get_hosts(@report)
+
+  @cvssv2_scoring_override = if config_options.key?('cvssv2_scoring_override')
+                               config_options['cvssv2_scoring_override']
+                             else
+                               false
+                             end
+
+  haml :hosts_list
+end
+
 # Generate a status report from the current findings
 get '/report/:id/status' do
   id = params[:id]
@@ -956,6 +981,36 @@ post '/report/:id/findings/new' do
 
   # for a parameter_pollution on report_id
   redirect to("/report/#{id}/findings")
+end
+
+# Create a new hosts in the report
+get '/report/:id/hosts/new' do
+  # Query for the first report matching the report_name
+  @report = get_report(params[:id])
+  return 'No Such Report' if @report.nil?
+
+  @hosts = get_hosts(@report)
+
+  haml :create_host
+end
+
+# Create the host in the DB
+post '/report/:id/hosts/new' do
+  error = mm_verify(request.POST)
+  return error if error.size > 1
+  data = url_escape_hash(request.POST)
+
+  id = params[:id]
+  @report = get_report(id)
+  return 'No Such Report' if @report.nil?
+
+    data['report_id'] = id
+
+  @host = Hosts.new(data)
+  @host.save
+
+  # for a parameter_pollution on report_id
+  redirect to("/report/#{id}/hosts")
 end
 
 # Edit the finding in a report
