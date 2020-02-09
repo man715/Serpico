@@ -1,5 +1,7 @@
 # Serpico
 ## SimplE RePort wrIting and CollaboratiOn tool
+This project is offically maintained here: https://github.com/SerpicoProject/Serpico
+This is a playground for me to attempt at adding useful features to my own implementation of serpico. If the features appear to work and are useful, I may submit them to the offical maintainer of this project. If you have any questions about serpico, please go to the offical Serpico github page or check out https://github.com/SerpicoProject/Serpico/wiki/Getting-Help
 Serpico is a penetration testing report generation and collaboration tool. It was developed to cut down on the amount of time it takes to write a penetration testing report.
 
 [Serpico Demo Video](https://www.youtube.com/watch?v=Sj7DkaQyx5o)
